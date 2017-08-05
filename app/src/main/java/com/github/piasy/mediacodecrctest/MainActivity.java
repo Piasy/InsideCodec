@@ -9,16 +9,18 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.tencent.mars.xlog.Log;
 import com.tencent.mars.xlog.Xlog;
+import org.webrtc.EglBase;
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RcTest.Notifier {
 
     private static final String[] BIT_RATE_MODES = new String[] {
             "CQ", "VBR", "CBR"
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.mBtnStart)
     Button mBtnStart;
+    @BindView(R.id.mTvInfo)
+    TextView mTvInfo;
     @BindView(R.id.mEtInitBr)
     EditText mEtInitBr;
     @BindView(R.id.mEtBrStep)
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RcTest mRcTest;
     private Config mConfig;
+    private EglBase mEglBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_single_choice);
         mSpBitrateMode.setAdapter(outputSpinnerAdapter);
 
+        mEglBase = EglBase.create();
+        mSurface.init(mEglBase.getEglBaseContext(), null);
         mSurface.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(final SurfaceHolder holder) {
@@ -89,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+        mSurface.release();
+        mEglBase.release();
         if (mRcTest != null) {
             mRcTest.stop();
         }
@@ -118,7 +127,17 @@ public class MainActivity extends AppCompatActivity {
                 .outputFps(30)
                 .outputKeyFrameInterval(2)
                 .build();
-        mRcTest = new RcTest(mConfig, mSurface);
+        mRcTest = new RcTest(mConfig, mEglBase, mSurface, this);
         mRcTest.start();
+    }
+
+    @Override
+    public void reportBr(final int br) {
+        mTvInfo.post(new Runnable() {
+            @Override
+            public void run() {
+                mTvInfo.setText("br: " + br);
+            }
+        });
     }
 }

@@ -33,6 +33,7 @@ public class EncoderWrapper extends MediaCodec.Callback {
     private final Bundle mParams = new Bundle();
 
     private final Handler mUiHandler = new Handler(Looper.getMainLooper());
+    private final RcTest.Notifier mNotifier;
 
     private EglBase mEglBase;
     private GlRectDrawer mDrawer;
@@ -60,8 +61,11 @@ public class EncoderWrapper extends MediaCodec.Callback {
             mUiHandler.postDelayed(this, RC_INTERVAL);
         }
     };
+    private volatile int mOutputBits;
+    private long mLastResetBitsTime;
 
-    public EncoderWrapper(final Config config) {
+    public EncoderWrapper(final Config config, final RcTest.Notifier notifier) {
+        mNotifier = notifier;
         Log.i(TAG, "Test config: " + config);
 
         mConfig = config;
@@ -103,6 +107,7 @@ public class EncoderWrapper extends MediaCodec.Callback {
                     mEglBase.createSurface(mEncoderSurface);
                     mEglBase.makeCurrent();
                     mDrawer = new GlRectDrawer();
+                    mLastResetBitsTime = System.currentTimeMillis();
 
                     if (!mConfig.asyncEnc()) {
                         startOutputThread();
@@ -148,6 +153,7 @@ public class EncoderWrapper extends MediaCodec.Callback {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                mEglBase.makeCurrent();
                 GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
                 mDrawer.drawOes(frame.textureId, frame.samplingMatrix, frame.width, frame.height, 0,
                         0, frame.width, frame.height);
@@ -194,6 +200,12 @@ public class EncoderWrapper extends MediaCodec.Callback {
             Log.i(TAG, "reportEncodedImage %d %d %d",
                     info.flags & MediaCodec.BUFFER_FLAG_KEY_FRAME, info.size,
                     info.presentationTimeUs);
+            if (System.currentTimeMillis() - mLastResetBitsTime > 1000) {
+                mNotifier.reportBr(mOutputBits);
+                mOutputBits = 0;
+                mLastResetBitsTime = System.currentTimeMillis();
+            }
+            mOutputBits += info.size * 8;
         }
     }
 }

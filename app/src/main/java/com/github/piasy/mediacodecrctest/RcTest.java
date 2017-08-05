@@ -25,15 +25,14 @@ public class RcTest implements FrameProducer.Callback {
 
     private volatile boolean mFinished;
 
-    public RcTest(final Config config, final SurfaceViewRenderer renderer) {
+    public RcTest(final Config config, final EglBase eglBase, final SurfaceViewRenderer renderer,
+            final Notifier notifier) {
+        mEglBase = eglBase;
         mSurfaceViewRenderer = renderer;
-        mEglBase = EglBase.create();
         File videoFile = new File(Environment.getExternalStorageDirectory(),
                 "alien-covenant.mp4");
         mFrameProducer = new FrameProducer(mEglBase, videoFile, config.outputFps(), this);
-        mEncoderWrapper = new EncoderWrapper(config);
-
-        mSurfaceViewRenderer.init(mEglBase.getEglBaseContext(), null);
+        mEncoderWrapper = new EncoderWrapper(config, notifier);
     }
 
     public void start() {
@@ -69,5 +68,9 @@ public class RcTest implements FrameProducer.Callback {
     public void onStop() {
         mFinished = true;
         mEncoderWrapper.stop();
+    }
+
+    public interface Notifier {
+        void reportBr(int br);
     }
 }
