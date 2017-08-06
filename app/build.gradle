@@ -33,5 +33,5 @@ dependencies {
 
     compile 'com.tencent.mars:mars-wrapper:1.1.7'
 
-    compile (name:'VideoSource', ext:'aar')
+    compile (name:'VideoCRE', ext:'aar')
 }

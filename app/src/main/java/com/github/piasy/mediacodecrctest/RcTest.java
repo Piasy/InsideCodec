@@ -53,6 +53,7 @@ public class RcTest implements FrameProducer.Callback {
         mVideoWidth = mediaFormat.getInteger(MediaFormat.KEY_WIDTH);
         mVideoHeight = mediaFormat.getInteger(MediaFormat.KEY_HEIGHT);
         Log.i(TAG, "Video size: %dx%d", mVideoWidth, mVideoHeight);
+        Log.i(TAG, "VideoFormat decoder " + mediaFormat);
     }
 
     @Override

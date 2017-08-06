@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements RcTest.Notifier {
                 .initBr(Integer.parseInt(mEtInitBr.getText().toString()))
                 .brStep(Integer.parseInt(mEtBrStep.getText().toString()))
                 .brMode(mSpBitrateMode.getSelectedItemPosition())
-                .outputWidth(360)
-                .outputHeight(640)
+                .outputWidth(1280)
+                .outputHeight(720)
                 .outputFps(30)
                 .outputKeyFrameInterval(2)
                 .build();

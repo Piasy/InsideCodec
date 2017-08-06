@@ -97,6 +97,7 @@ public class EncoderWrapper extends MediaCodec.Callback {
                         mEncoder.setCallback(EncoderWrapper.this);
                     }
                     mEncoder.configure(encodeFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
+                    Log.i(TAG, "VideoFormat encoder " + encodeFormat);
 
                     mEncoderSurface = mEncoder.createInputSurface();
 
