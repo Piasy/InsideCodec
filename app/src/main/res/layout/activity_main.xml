@@ -17,6 +17,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="init br"
                 android:inputType="number"
                 android:text="500"
                 />
@@ -26,6 +27,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="br step"
+                android:inputType="number"
+                android:text="50"
+                />
+
+        <EditText
+                android:id="@+id/mEtQuality"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="quality"
                 android:inputType="number"
                 android:text="50"
                 />

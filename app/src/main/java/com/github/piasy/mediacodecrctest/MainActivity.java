@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements RcTest.Notifier {
     EditText mEtInitBr;
     @BindView(R.id.mEtBrStep)
     EditText mEtBrStep;
+    @BindView(R.id.mEtQuality)
+    EditText mEtQuality;
     @BindView(R.id.mSpBitrateMode)
     Spinner mSpBitrateMode;
     @BindView(R.id.mCbAsyncEnc)
@@ -121,9 +123,10 @@ public class MainActivity extends AppCompatActivity implements RcTest.Notifier {
                 .asyncEnc(mCbAsyncEnc.isChecked())
                 .initBr(Integer.parseInt(mEtInitBr.getText().toString()))
                 .brStep(Integer.parseInt(mEtBrStep.getText().toString()))
+                .quality(Integer.parseInt(mEtQuality.getText().toString()))
                 .brMode(mSpBitrateMode.getSelectedItemPosition())
-                .outputWidth(1280)
-                .outputHeight(720)
+                .outputWidth(448)
+                .outputHeight(800)
                 .outputFps(30)
                 .outputKeyFrameInterval(2)
                 .build();

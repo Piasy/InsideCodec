@@ -54,7 +54,7 @@ public class EncoderWrapper extends MediaCodec.Callback {
             mCurrentBr += mRcSign * mConfig.brStep();
 
             mParams.clear();
-            mParams.putInt(MediaCodec.PARAMETER_KEY_VIDEO_BITRATE, mCurrentBr);
+            mParams.putInt(MediaCodec.PARAMETER_KEY_VIDEO_BITRATE, mCurrentBr * 1000);
             mEncoder.setParameters(mParams);
             Log.i(TAG, "update bitrate %d", mCurrentBr);
 
@@ -91,6 +91,9 @@ public class EncoderWrapper extends MediaCodec.Callback {
                     encodeFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL,
                             mConfig.outputKeyFrameInterval());
                     encodeFormat.setInteger(MediaFormat.KEY_BITRATE_MODE, mConfig.brMode());
+                    if (mConfig.brMode() == MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CQ) {
+                        encodeFormat.setInteger("quality", mConfig.quality());
+                    }
                     encodeFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT,
                             MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
                     if (mConfig.asyncEnc()) {

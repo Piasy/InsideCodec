@@ -20,6 +20,8 @@ public abstract class Config {
 
     public abstract int brStep();
 
+    public abstract int quality();
+
     public abstract int brMode();
 
     public abstract int outputWidth();
@@ -39,6 +41,8 @@ public abstract class Config {
         public abstract Builder initBr(int initBr);
 
         public abstract Builder brStep(int brStep);
+
+        public abstract Builder quality(int quality);
 
         public abstract Builder brMode(int brMode);
 
