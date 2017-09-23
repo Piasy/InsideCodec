@@ -1,8 +1,5 @@
-# MediaCodecRcTest
+# InsideCodec
 
-A project to test Android MediaCodec rate control.
+Random walks around codec stuff, H.264, H.265, MediaCodec, etc.
 
-## Usage
-
-1. push the video file `alien-covenant.mp4` into `/sdcard/`;
-2. build and run;
++ MediaCodecRcTest: A project to test Android MediaCodec rate control.
