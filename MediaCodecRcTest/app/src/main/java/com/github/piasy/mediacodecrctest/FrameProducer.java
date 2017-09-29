@@ -164,6 +164,7 @@ public class FrameProducer implements SurfaceTextureHelper.OnTextureFrameAvailab
     @Override
     public void onTextureFrameAvailable(int oesTextureId, float[] transformMatrix,
             long timestampNs) {
+        Log.i(TAG, "decode frame: %d", timestampNs / 1000);
         mCallback.onFrame(oesTextureId, transformMatrix, timestampNs);
         mSurfaceTextureHelper.returnTextureFrame();
     }
