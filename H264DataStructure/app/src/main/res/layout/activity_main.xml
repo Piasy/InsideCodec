@@ -13,11 +13,4 @@
             android:text="start"
             />
 
-    <Button
-            android:id="@+id/mBtnParse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="parse"
-            />
-
 </LinearLayout>
